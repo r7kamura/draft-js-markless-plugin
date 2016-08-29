@@ -63,7 +63,15 @@ class Root extends React.Component {
         </header>
         <div className="container" style={{ marginTop: "-80px" }}>
           <div className="card">
-            <div className="card-content">
+            <ul className="tabs">
+              <li className="tab">
+                <a href="#html">HTML</a>
+              </li>
+              <li className="tab">
+                <a href="#markdown">Markdown</a>
+              </li>
+            </ul>
+            <div className="card-content" style={{ padding: "0 48px 48px 48px" }}>
               <div className="markdown-body">
                 <Editor
                   ref={(ref) => { this.ref = ref }}
