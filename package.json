@@ -14,6 +14,8 @@
     "eslint": "^3.4.0",
     "eslint-plugin-react": "^6.2.0",
     "fixpack": "^2.3.1",
+    "github-markdown-css": "^2.4.0",
+    "node-sass": "^3.8.0",
     "watchify": "^3.7.0"
   },
   "engines": {
@@ -35,10 +37,11 @@
   },
   "scripts": {
     "build": "npm run build:rm && npm run build:mkdir && npm run build:js && npm run build:demo",
-    "build:demo": "rm -rf docs && mkdir docs && cp demo/index.html docs && browserify demo/application.js -t babelify -o docs/application.js",
+    "build:demo": "rm -rf docs && mkdir docs && cp demo/index.html docs && browserify demo/application.js -t babelify -o docs/application.js && npm run build:sass",
     "build:js": "browserify src/index.js -t babelify -o lib/index.js",
     "build:mkdir": "mkdir lib",
     "build:rm": "rm -rf lib",
+    "build:sass": "node-sass demo/application.scss docs/application.css",
     "lint": "npm run lint:fixpack && npm run lint:eslint",
     "lint:eslint": "eslint src/**/*.{js,jsx}",
     "lint:fixpack": "fixpack",
