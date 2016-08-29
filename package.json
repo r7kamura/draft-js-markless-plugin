@@ -33,7 +33,8 @@
     "url": "https://github.com/r7kamura/draft-js-markless-plugin.git"
   },
   "scripts": {
-    "build": "npm run build:rm && npm run build:mkdir && npm run build:js",
+    "build": "npm run build:rm && npm run build:mkdir && npm run build:js && npm run build:demo",
+    "build:demo": "rm -rf docs && mkdir docs && cp demo/index.html docs && browserify demo/application.js -t babelify -o docs/application.js",
     "build:js": "browserify src/index.js -t babelify -o lib/index.js",
     "build:mkdir": "mkdir lib",
     "build:rm": "rm -rf lib",
