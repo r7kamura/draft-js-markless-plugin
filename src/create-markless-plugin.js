@@ -1,4 +1,4 @@
-import { EditorState } from "draft-js";
+import { EditorState, RichUtils } from "draft-js";
 
 /**
  * @param {EditorState} editorState
@@ -72,7 +72,10 @@ export default function createMarklessPlugin () {
       const targetString = "```";
       if (block.getText() === targetString && selection.getEndOffset() === targetString.length) {
         setEditorState(changeCurrentBlockType(editorState, "code-block"));
-        event.preventDefault();
+        return true;
+      }
+      if (RichUtils.getCurrentBlockType(editorState) === "code-block") {
+        setEditorState(RichUtils.insertSoftNewline(editorState));
         return true;
       }
     }
