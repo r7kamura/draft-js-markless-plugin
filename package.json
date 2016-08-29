@@ -1,0 +1,11 @@
+{
+  "name": "draft-js-markless-plugin",
+  "version": "0.0.1",
+  "description": "A plugin for draft-js that allows you to create an WYSIWYG editor that supports Markdown-like keybinding.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryo Nakamura <r7kamura@gmail.com> (https://github.com/r7kamura)",
+  "license": "MIT"
+}
