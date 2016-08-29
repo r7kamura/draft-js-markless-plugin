@@ -10,6 +10,7 @@
     "babel-preset-react": "^6.11.1",
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
+    "draft-js-plugins-editor": "^1.1.0",
     "eslint": "^3.4.0",
     "eslint-plugin-react": "^6.2.0",
     "fixpack": "^2.3.1",
@@ -42,7 +43,8 @@
     "lint:eslint": "eslint src/**/*.{js,jsx}",
     "lint:fixpack": "fixpack",
     "test": "npm run lint && npm run build",
-    "watch": "npm run build && npm run watch:js",
+    "watch": "npm run build && npm run watch:js & npm run watch:demo",
+    "watch:demo": "watchify demo/application.js -t babelify -o docs/application.js -v",
     "watch:js": "watchify src/index.js -t babelify -o lib/index.js -v"
   },
   "dependencies": {
