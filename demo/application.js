@@ -45,12 +45,35 @@ class Root extends React.Component {
   render() {
     return(
       <div>
-        <Editor
-          ref={(ref) => { this.ref = ref }}
-          editorState={this.state.editorState}
-          onChange={this.onChange.bind(this)}
-          plugins={plugins}
-        />
+        <header
+          style={{
+            backgroundColor: "#333",
+            padding: "10px 20px 100px",
+          }}
+        >
+          <div className="container">
+            <h1 style={{ margin: 0, lineHeight: 1 }}>
+              <a href="https://github.com/r7kamura/draft-js-markless-plugin" style={{ fontSize: "20px", color: "white" }}>r7kamura/draft-js-markless-plugin</a>
+            </h1>
+            <p style={{ color: "#CCC" }}>
+              A plugin for draft-js that allows you to create a markdown-like keybinding WYSIWYG editor.
+            </p>
+          </div>
+        </header>
+        <div className="container" style={{ marginTop: "-80px" }}>
+          <div className="card">
+            <div className="card-content">
+              <div className="markdown-body">
+                <Editor
+                  ref={(ref) => { this.ref = ref }}
+                  editorState={this.state.editorState}
+                  onChange={this.onChange.bind(this)}
+                  plugins={plugins}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
