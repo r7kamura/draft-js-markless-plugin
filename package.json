@@ -13,6 +13,7 @@
     "draft-js-autolist-plugin": "0.0.3",
     "draft-js-block-breakout-plugin": "0.0.2",
     "draft-js-emoji-plugin": "^1.2.3",
+    "draft-js-import-markdown": "^0.1.6",
     "draft-js-linkify-plugin": "^1.0.1",
     "draft-js-plugins-editor": "^1.1.0",
     "eslint": "^3.4.0",

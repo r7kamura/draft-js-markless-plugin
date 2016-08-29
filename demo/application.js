@@ -1,4 +1,5 @@
 import { EditorState } from "draft-js";
+import { stateFromMarkdown } from "draft-js-import-markdown";
 import createAutoListPlugin from "draft-js-autolist-plugin";
 import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
@@ -35,7 +36,7 @@ class Root extends React.Component {
 
   constructor(...args) {
     super(...args);
-    this.state = { editorState: EditorState.createEmpty() };
+    this.state = { editorState: EditorState.createWithContent(stateFromMarkdown(this.props.initialValue)) };
   }
 
   onChange(editorState) {
@@ -79,7 +80,25 @@ class Root extends React.Component {
   }
 }
 
+const initialValue = `
+# draft-js-markless-plugin
+
+draft-js-markless-plugin is a plugin for draft-js that allows you to create a markdown-like keybinding WYSIWYG editor.
+
+1. Markdown-like keybindings
+1. Nice default behaviors for writing text
+1. Built on draft.js
+
+## Repository
+
+https://github.com/r7kamura/draft-js-markless-plugin
+
+## LICENSE
+
+draft-js-markless-plugin is MIT licensed.
+`;
+
 ReactDOM.render(
-  <Root/>,
+  <Root initialValue={initialValue}/>,
   document.getElementById("root")
 );
