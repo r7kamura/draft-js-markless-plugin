@@ -73,17 +73,12 @@ class Root extends React.Component {
   render() {
     return(
       <div>
-        <header
-          style={{
-            backgroundColor: "#333",
-            padding: "10px 20px 100px",
-          }}
-        >
+        <header className="header">
           <div className="container">
             <h1 style={{ margin: 0, lineHeight: 1 }}>
               <a href="https://github.com/r7kamura/draft-js-markless-plugin" style={{ fontSize: "20px", color: "white" }}>r7kamura/draft-js-markless-plugin</a>
             </h1>
-            <p style={{ color: "#CCC" }}>
+            <p className="header-description">
               A plugin for draft-js that allows you to create a markdown-like keybinding WYSIWYG editor.
             </p>
           </div>

@@ -1,5 +1,18 @@
+body {
+  background-color: #F7F7F7;
+}
+
 .container {
   max-width: 980px;
+}
+
+.header {
+  background-color: #222;
+  padding: 10px 20px 100px;
+
+  &-description {
+    color: rgba(255, 255, 255, .54);
+  }
 }
 
 .markdown-body {
