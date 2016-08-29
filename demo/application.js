@@ -1,5 +1,6 @@
 import { EditorState } from "draft-js";
 import { stateFromMarkdown } from "draft-js-import-markdown";
+import { stateToMarkdown } from "draft-js-export-markdown";
 import createAutoListPlugin from "draft-js-autolist-plugin";
 import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
@@ -29,18 +30,44 @@ const plugins = [
   marklessPlugin,
 ];
 
-class Root extends React.Component {
+class EditorTabContent extends React.Component {
   componentDidMount() {
     this.ref.focus();
   }
 
+  render() {
+    return(
+      <div className="markdown-body">
+        <Editor
+          ref={(ref) => { this.ref = ref }}
+          editorState={this.props.editorState}
+          onChange={this.props.onEditorStateChange}
+          plugins={plugins}
+        />
+      </div>
+    );
+  }
+}
+
+class Root extends React.Component {
   constructor(...args) {
     super(...args);
-    this.state = { editorState: EditorState.createWithContent(stateFromMarkdown(this.props.initialValue)) };
+    this.state = {
+      editorState: EditorState.createWithContent(stateFromMarkdown(this.props.initialValue)),
+      htmlActive: true,
+    };
   }
 
-  onChange(editorState) {
+  onEditorStateChange(editorState) {
     this.setState({ editorState });
+  }
+
+  onHtmlTabClicked() {
+    this.setState({ htmlActive: true });
+  }
+
+  onMarkdownTabClicked() {
+    this.setState({ htmlActive: false });
   }
 
   render() {
@@ -64,22 +91,29 @@ class Root extends React.Component {
         <div className="container" style={{ marginTop: "-80px" }}>
           <div className="card">
             <ul className="tabs">
-              <li className="tab">
+              <li className="tab" onClick={this.onHtmlTabClicked.bind(this)}>
                 <a href="#html">HTML</a>
               </li>
-              <li className="tab">
+              <li className="tab" onClick={this.onMarkdownTabClicked.bind(this)}>
                 <a href="#markdown">Markdown</a>
               </li>
             </ul>
             <div className="card-content" style={{ padding: "0 48px 48px 48px" }}>
-              <div className="markdown-body">
-                <Editor
-                  ref={(ref) => { this.ref = ref }}
-                  editorState={this.state.editorState}
-                  onChange={this.onChange.bind(this)}
-                  plugins={plugins}
-                />
-              </div>
+              {
+                this.state.htmlActive &&
+                  <EditorTabContent
+                    editorState={this.state.editorState}
+                    onEditorStateChange={this.onEditorStateChange.bind(this)}
+                  />
+              }
+              {
+                !this.state.htmlActive &&
+                  <pre>
+                    <code>
+                      {stateToMarkdown(this.state.editorState.getCurrentContent())}
+                    </code>
+                  </pre>
+              }
             </div>
           </div>
         </div>
@@ -94,8 +128,8 @@ const initialValue = `
 draft-js-markless-plugin is a plugin for draft-js that allows you to create a markdown-like keybinding WYSIWYG editor.
 
 1. Markdown-like keybindings
-1. Nice default behaviors for writing text
-1. Built on draft.js
+2. Nice default behaviors for writing text
+3. Built on draft.js
 
 ## Repository
 
