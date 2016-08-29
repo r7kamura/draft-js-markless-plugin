@@ -1,3 +1,25 @@
 .container {
   max-width: 980px;
 }
+
+.markdown-body {
+  font-size: 15px;
+
+  h1 {
+    border-bottom: solid 1px #DDD;
+    padding-bottom: 5px;
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+}
