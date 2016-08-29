@@ -10,6 +10,10 @@ const plugins = [
 ];
 
 class Root extends React.Component {
+  componentDidMount() {
+    this.ref.focus();
+  }
+
   constructor(...args) {
     super(...args);
     this.state = { editorState: EditorState.createEmpty() };
@@ -23,6 +27,7 @@ class Root extends React.Component {
     return(
       <div>
         <Editor
+          ref={(ref) => { this.ref = ref }}
           editorState={this.state.editorState}
           onChange={this.onChange.bind(this)}
           plugins={plugins}
