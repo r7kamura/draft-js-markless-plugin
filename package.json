@@ -1,11 +1,34 @@
 {
   "name": "draft-js-markless-plugin",
-  "version": "0.0.1",
   "description": "A plugin for draft-js that allows you to create an WYSIWYG editor that supports Markdown-like keybinding.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "0.0.1",
   "author": "Ryo Nakamura <r7kamura@gmail.com> (https://github.com/r7kamura)",
-  "license": "MIT"
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "eslint": "^3.4.0",
+    "eslint-plugin-react": "^6.2.0",
+    "fixpack": "^2.3.1",
+    "watchify": "^3.7.0"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run build:rm && npm run build:mkdir && npm run build:js",
+    "build:js": "browserify src/index.js -t babelify -o lib/index.js",
+    "build:mkdir": "mkdir lib",
+    "build:rm": "rm -rf lib",
+    "lint": "npm run lint:fixpack && npm run lint:eslint",
+    "lint:eslint": "eslint src/**/*.{js,jsx}",
+    "lint:fixpack": "fixpack",
+    "test": "npm run lint && npm run build",
+    "watch": "npm run build && npm run watch:js",
+    "watch:js": "watchify src/index.js -t babelify -o lib/index.js -v"
+  }
 }
