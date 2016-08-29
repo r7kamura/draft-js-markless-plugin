@@ -35,4 +35,22 @@ body {
   h4 {
     font-size: 16px;
   }
+
+  code {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 12px;
+  }
+
+  pre {
+    background-color: #f7f7f7;
+    border-radius: 3px;
+    font-size: 85%;
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 1.45;
+    margin-bottom: 0;
+    margin-top: 0;
+    overflow: auto;
+    padding: 16px;
+    word-wrap: normal;
+  }
 }

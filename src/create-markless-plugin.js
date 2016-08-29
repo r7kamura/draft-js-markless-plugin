@@ -61,6 +61,20 @@ export default function createMarklessPlugin () {
       default:
         return false;
       }
+    },
+
+    handleReturn(event, { getEditorState, setEditorState }) {
+      const editorState = getEditorState();
+      const contentState = editorState.getCurrentContent();
+      const selection = editorState.getSelection();
+      const key = selection.getStartKey();
+      const block = contentState.getBlockForKey(key);
+      const targetString = "```";
+      if (block.getText() === targetString && selection.getEndOffset() === targetString.length) {
+        setEditorState(changeCurrentBlockType(editorState, "code-block"));
+        event.preventDefault();
+        return true;
+      }
     }
   };
 }
