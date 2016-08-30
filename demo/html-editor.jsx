@@ -29,6 +29,47 @@ const plugins = [
   marklessPlugin,
 ];
 
+const ImageComponent = (props) => {
+  const { alt, src } = Entity.get(props.entityKey).getData();
+  return <img alt={alt} src={src} />;
+};
+
+const LinkComponent = (props) => {
+  const { url } = Entity.get(props.entityKey).getData();
+  return(
+    <a href={url}>
+      {props.children}
+    </a>
+  );
+};
+
+const decorators = [
+  {
+    strategy: function (contentBlock, callback) {
+      contentBlock.findEntityRanges(
+        (character) => {
+          const entityKey = character.getEntity();
+          return entityKey !== null && Entity.get(entityKey).getType() === "LINK";
+        },
+        callback
+      );
+    },
+    component: LinkComponent,
+  },
+  {
+    strategy: function (contentBlock, callback) {
+      contentBlock.findEntityRanges(
+        (character) => {
+          const entityKey = character.getEntity();
+          return entityKey !== null && Entity.get(entityKey).getType() === "IMAGE";
+        },
+        callback
+      );
+    },
+    component: ImageComponent,
+  },
+];
+
 export default class HtmlEditor extends React.Component {
   componentDidMount() {
     this.ref.focus();

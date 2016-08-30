@@ -72,6 +72,10 @@ draft-js-markless-plugin is a plugin for draft-js that allows you to create a ma
 2. Nice default behaviors for writing text
 3. Built on draft.js
 
+[demo](https://raw.githubusercontent.com/r7kamura/draft-js-markless-plugin/master/images/demo.gif)
+
+![demo](https://raw.githubusercontent.com/r7kamura/draft-js-markless-plugin/master/images/demo.gif)
+
 ## Repository
 
 https://github.com/r7kamura/draft-js-markless-plugin
