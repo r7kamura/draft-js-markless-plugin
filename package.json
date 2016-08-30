@@ -52,6 +52,7 @@
     "lint": "npm run lint:fixpack && npm run lint:eslint",
     "lint:eslint": "eslint src/**/*.{js,jsx}",
     "lint:fixpack": "fixpack",
+    "publish": "gh-pages -d docs",
     "test": "npm run lint && npm run build",
     "watch": "npm run build && npm run watch:js & npm run watch:demo",
     "watch:demo": "watchify demo/application.jsx -t babelify -o docs/application.js -v",
