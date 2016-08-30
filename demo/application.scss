@@ -53,4 +53,16 @@ body {
     padding: 16px;
     word-wrap: normal;
   }
+
+  ul {
+    margin-left: 2.7em;
+
+    li {
+      list-style-type: disc;
+    }
+  }
+
+  img {
+    max-width: 100%;
+  }
 }

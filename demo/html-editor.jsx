@@ -1,4 +1,4 @@
-import { EditorState } from "draft-js";
+import { EditorState, Entity } from "draft-js";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 import { stateToMarkdown } from "draft-js-export-markdown";
 import createAutoListPlugin from "draft-js-autolist-plugin";
@@ -51,7 +51,7 @@ const decorators = [
           const entityKey = character.getEntity();
           return entityKey !== null && Entity.get(entityKey).getType() === "LINK";
         },
-        callback
+        callback,
       );
     },
     component: LinkComponent,
@@ -71,10 +71,6 @@ const decorators = [
 ];
 
 export default class HtmlEditor extends React.Component {
-  componentDidMount() {
-    this.ref.focus();
-  }
-
   constructor(...args) {
     super(...args);
     this.state = {
@@ -93,7 +89,7 @@ export default class HtmlEditor extends React.Component {
     return(
       <div className="markdown-body">
         <Editor
-          ref={(ref) => { this.ref = ref }}
+          decorators={decorators}
           editorState={this.state.editorState}
           onChange={this.onEditorStateChange.bind(this)}
           plugins={plugins}
