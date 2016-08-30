@@ -6,7 +6,6 @@ import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
 import createMarklessPlugin from "../src/index.js";
 import Editor from "draft-js-plugins-editor";
-import PrismDraftDecorator from "draft-js-prism";
 import React from "react";
 
 const autoListPlugin = createAutoListPlugin();
@@ -30,8 +29,6 @@ const plugins = [
   marklessPlugin,
 ];
 
-const decorator = new PrismDraftDecorator();
-
 export default class HtmlEditor extends React.Component {
   componentDidMount() {
     this.ref.focus();
@@ -41,8 +38,7 @@ export default class HtmlEditor extends React.Component {
     super(...args);
     this.state = {
       editorState: EditorState.createWithContent(
-        stateFromMarkdown(this.props.initialValue),
-        decorator
+        stateFromMarkdown(this.props.initialValue)
       ),
     };
   }
