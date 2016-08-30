@@ -6,6 +6,7 @@ import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
 import createMarklessPlugin from "../src/index.js";
 import Editor from "draft-js-plugins-editor";
+import Prism from "prismjs";
 import React from "react";
 
 const autoListPlugin = createAutoListPlugin();
@@ -43,6 +44,21 @@ const LinkComponent = (props) => {
   );
 };
 
+const TokenComponent = (props) => {
+  const sections = props.offsetKey.split("-");
+  const blockKey = sections[0];
+  const offset = sections[1];
+  const tokenType = tokensCache[blockKey][offset];
+  const block = props.getEditorState().getCurrentContent().getBlockForKey(blockKey);
+  return(
+    <span className={`prism-token token ${tokenType}`}>
+      {props.children}
+    </span>
+  );
+};
+
+const tokensCache = {};
+
 const decorators = [
   {
     strategy: function (contentBlock, callback) {
@@ -68,6 +84,30 @@ const decorators = [
     },
     component: ImageComponent,
   },
+  {
+    strategy: function (contentBlock, callback) {
+      if (contentBlock.getType() === "code-block") {
+        const languageName = contentBlock.getData().get("languageName");
+        const language = Prism.languages[languageName];
+        if (language) {
+          const tokens = Prism.tokenize(contentBlock.getText(), language);
+          const blockKey = contentBlock.getKey();
+          tokensCache[blockKey] = tokensCache[blockKey] || {};
+          let offset = 0;
+          tokens.forEach((token) => {
+            if (typeof token === "string") {
+              offset += token.length;
+            } else {
+              tokensCache[blockKey][offset.toString()] = token.type;
+              callback(offset, offset + token.content.length);
+              offset += token.content.length;
+            }
+          });
+        }
+      }
+    },
+    component: TokenComponent,
+  },
 ];
 
 export default class HtmlEditor extends React.Component {
@@ -79,7 +119,6 @@ export default class HtmlEditor extends React.Component {
       ),
     };
   }
-
 
   onEditorStateChange(editorState) {
     this.setState({ editorState });

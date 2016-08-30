@@ -6,7 +6,7 @@ import { List } from "immutable";
  * @param {String} type
  * @returns {EditorState}
  */
-const changeCurrentBlockType = (editorState, type) => {
+const changeCurrentBlockType = (editorState, type, blockMetadata = {}) => {
   const currentContent = editorState.getCurrentContent();
   const selection = editorState.getSelection();
   const key = selection.getStartKey();
@@ -14,6 +14,7 @@ const changeCurrentBlockType = (editorState, type) => {
   const block = blockMap.get(key);
   const newBlock = block.merge({
     type,
+    data: block.getData().merge(blockMetadata),
     text: "",
   });
   const newSelection = selection.merge({
@@ -71,8 +72,9 @@ export default function createMarklessPlugin () {
       const key = selection.getStartKey();
       const currentBlock = contentState.getBlockForKey(key);
       const targetString = "```";
-      if (currentBlock.getText() === targetString && selection.getEndOffset() === targetString.length) {
-        setEditorState(changeCurrentBlockType(editorState, "code-block"));
+      const matchData = /^```([\w-]+)?$/.exec(currentBlock.getText());
+      if (matchData && selection.getEndOffset() === currentBlock.getText().length) {
+        setEditorState(changeCurrentBlockType(editorState, "code-block", { languageName: matchData[1] }));
         return true;
       }
       if (RichUtils.getCurrentBlockType(editorState) === "code-block") {
