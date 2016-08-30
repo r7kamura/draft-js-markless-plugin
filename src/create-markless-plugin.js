@@ -1,4 +1,5 @@
-import { EditorState, RichUtils } from "draft-js";
+import { genKey, ContentBlock, EditorState, RichUtils } from "draft-js";
+import { List } from "immutable";
 
 /**
  * @param {EditorState} editorState
@@ -68,15 +69,60 @@ export default function createMarklessPlugin () {
       const contentState = editorState.getCurrentContent();
       const selection = editorState.getSelection();
       const key = selection.getStartKey();
-      const block = contentState.getBlockForKey(key);
+      const currentBlock = contentState.getBlockForKey(key);
       const targetString = "```";
-      if (block.getText() === targetString && selection.getEndOffset() === targetString.length) {
+      if (currentBlock.getText() === targetString && selection.getEndOffset() === targetString.length) {
         setEditorState(changeCurrentBlockType(editorState, "code-block"));
         return true;
       }
       if (RichUtils.getCurrentBlockType(editorState) === "code-block") {
-        setEditorState(RichUtils.insertSoftNewline(editorState));
-        return true;
+        if (event.ctrlKey) {
+          const emptyBlockKey = genKey();
+          const emptyBlock = new ContentBlock({
+            characterList: List(),
+            depth: 0,
+            key: emptyBlockKey,
+            text: "",
+            type: "unstyled",
+          })
+          const blockMap = contentState.getBlockMap();
+          const blocksBefore = blockMap.toSeq().takeUntil((value) => value === currentBlock);
+          const blocksAfter = blockMap.toSeq().skipUntil((value) => value === currentBlock).rest();
+          const augmentedBlocks = [
+            [
+              currentBlock.getKey(),
+              currentBlock,
+            ],
+            [
+              emptyBlockKey,
+              emptyBlock,
+            ],
+          ];
+          const newBlocks = blocksBefore.concat(augmentedBlocks, blocksAfter).toOrderedMap();
+          const focusKey = emptyBlockKey;
+          const newContentState = contentState.merge({
+            blockMap: newBlocks,
+            selectionBefore: selection,
+            selectionAfter: selection.merge({
+              anchorKey: focusKey,
+              anchorOffset: 0,
+              focusKey: focusKey,
+              focusOffset: 0,
+              isBackward: false,
+            }),
+          });
+          setEditorState(
+            EditorState.push(
+              editorState,
+              newContentState,
+              "split-block"
+            )
+          );
+          return true;
+        } else {
+          setEditorState(RichUtils.insertSoftNewline(editorState));
+          return true;
+        }
       }
     }
   };

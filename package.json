@@ -58,6 +58,7 @@
     "watch:js": "watchify src/index.js -t babelify -o lib/index.js -v"
   },
   "dependencies": {
-    "draft-js": "^0.8.1"
+    "draft-js": "^0.8.1",
+    "immutable": "^3.8.1"
   }
 }
