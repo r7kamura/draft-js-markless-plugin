@@ -1,65 +1,13 @@
-import { EditorState } from "draft-js";
-import { stateFromMarkdown } from "draft-js-import-markdown";
-import { stateToMarkdown } from "draft-js-export-markdown";
-import createAutoListPlugin from "draft-js-autolist-plugin";
-import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
-import createLinkifyPlugin from "draft-js-linkify-plugin";
-import createMarklessPlugin from "../src/index.js";
-import Editor from "draft-js-plugins-editor";
+import HtmlEditor from "./html-editor.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
-
-const autoListPlugin = createAutoListPlugin();
-const blockBreakoutPlugin = createBlockBreakoutPlugin({
-  breakoutBlocks: [
-    "blockquote",
-    "header-five",
-    "header-four",
-    "header-one",
-    "header-six",
-    "header-three",
-    "header-two",
-  ]
-});
-const linkifyPlugin = createLinkifyPlugin();
-const marklessPlugin = createMarklessPlugin();
-const plugins = [
-  autoListPlugin,
-  blockBreakoutPlugin,
-  linkifyPlugin,
-  marklessPlugin,
-];
-
-class EditorTabContent extends React.Component {
-  componentDidMount() {
-    this.ref.focus();
-  }
-
-  render() {
-    return(
-      <div className="markdown-body">
-        <Editor
-          ref={(ref) => { this.ref = ref }}
-          editorState={this.props.editorState}
-          onChange={this.props.onEditorStateChange}
-          plugins={plugins}
-        />
-      </div>
-    );
-  }
-}
 
 class Root extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = {
-      editorState: EditorState.createWithContent(stateFromMarkdown(this.props.initialValue)),
       htmlActive: true,
     };
-  }
-
-  onEditorStateChange(editorState) {
-    this.setState({ editorState });
   }
 
   onHtmlTabClicked() {
@@ -96,16 +44,14 @@ class Root extends React.Component {
             <div className="card-content" style={{ padding: "0 48px 48px 48px" }}>
               {
                 this.state.htmlActive &&
-                  <EditorTabContent
-                    editorState={this.state.editorState}
-                    onEditorStateChange={this.onEditorStateChange.bind(this)}
+                  <HtmlEditor
+                    initialValue={this.props.initialValue}
                   />
               }
               {
                 !this.state.htmlActive &&
                   <pre>
                     <code>
-                      {stateToMarkdown(this.state.editorState.getCurrentContent())}
                     </code>
                   </pre>
               }

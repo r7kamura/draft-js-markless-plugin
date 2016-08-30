@@ -17,10 +17,13 @@
     "draft-js-import-markdown": "^0.1.6",
     "draft-js-linkify-plugin": "^1.0.1",
     "draft-js-plugins-editor": "^1.1.0",
+    "draft-js-prism": "^1.0.3",
     "eslint": "^3.4.0",
     "eslint-plugin-react": "^6.2.0",
     "fixpack": "^2.3.1",
     "node-sass": "^3.8.0",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
     "watchify": "^3.7.0"
   },
   "engines": {
@@ -42,7 +45,7 @@
   },
   "scripts": {
     "build": "npm run build:rm && npm run build:mkdir && npm run build:js && npm run build:demo",
-    "build:demo": "rm -rf docs && mkdir docs && cp demo/index.html docs && browserify demo/application.js -t babelify -o docs/application.js && npm run build:sass",
+    "build:demo": "rm -rf docs && mkdir docs && cp demo/index.html docs && browserify demo/application.jsx -t babelify -o docs/application.js && npm run build:sass",
     "build:js": "browserify src/index.js -t babelify -o lib/index.js",
     "build:mkdir": "mkdir lib",
     "build:rm": "rm -rf lib",
@@ -52,12 +55,10 @@
     "lint:fixpack": "fixpack",
     "test": "npm run lint && npm run build",
     "watch": "npm run build && npm run watch:js & npm run watch:demo",
-    "watch:demo": "watchify demo/application.js -t babelify -o docs/application.js -v",
+    "watch:demo": "watchify demo/application.jsx -t babelify -o docs/application.js -v",
     "watch:js": "watchify src/index.js -t babelify -o lib/index.js -v"
   },
   "dependencies": {
-    "draft-js": "^0.8.1",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "draft-js": "^0.8.1"
   }
 }
