@@ -1,6 +1,6 @@
 import { ContentState, EditorState } from "draft-js";
 import { stateFromMarkdown } from "draft-js-import-markdown";
-import { stateToMarkdown } from "draft-js-export-markdown";
+import stateToMarkdown from "./state-to-gfm";
 import HtmlEditor from "./html-editor.jsx";
 import MarkdownEditor from "./markdown-editor.jsx";
 import React from "react";
