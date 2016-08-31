@@ -88,7 +88,8 @@ class MarkdownGeneration {
 
   onBlockCode(block) {
     this.pushLineBreak();
-    this.output.push("```\n");
+    const languageName = block.getData().get("languageName") || "";
+    this.output.push("```" + languageName + "\n");
     this.output.push(`${this.renderBlockContent(block)}\n`);
     this.output.push("```\n");
   }
