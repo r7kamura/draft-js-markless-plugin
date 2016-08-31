@@ -1,7 +1,8 @@
-import { EditorState } from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import { stateFromMarkdown } from "draft-js-import-markdown";
 import { stateToMarkdown } from "draft-js-export-markdown";
 import HtmlEditor from "./html-editor.jsx";
+import MarkdownEditor from "./markdown-editor.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -20,12 +21,36 @@ class Root extends React.Component {
     this.setState({ htmlEditorState: editorState });
   }
 
+  onMarkdownEditorStateChange(editorState) {
+    this.setState({ markdownEditorState: editorState });
+  }
+
   onHtmlTabClicked() {
-    this.setState({ htmlActive: true });
+    if (!this.state.htmlActive) {
+      this.setState({
+        htmlActive: true,
+        htmlEditorState: EditorState.createWithContent(
+          stateFromMarkdown(
+            this.state.markdownEditorState.getCurrentContent().getPlainText()
+          )
+        ),
+      });
+    }
   }
 
   onMarkdownTabClicked() {
-    this.setState({ htmlActive: false });
+    if (this.state.htmlActive) {
+      this.setState({
+        htmlActive: false,
+        markdownEditorState: EditorState.createWithContent(
+          ContentState.createFromText(
+            stateToMarkdown(
+              this.state.htmlEditorState.getCurrentContent()
+            )
+          )
+        ),
+      });
+    }
   }
 
   render() {
@@ -56,16 +81,15 @@ class Root extends React.Component {
                 this.state.htmlActive &&
                   <HtmlEditor
                     editorState={this.state.htmlEditorState}
-                    onHtmlEditorStateChange={this.onHtmlEditorStateChange.bind(this)}
+                    onEditorStateChange={this.onHtmlEditorStateChange.bind(this)}
                   />
               }
               {
                 !this.state.htmlActive &&
-                  <pre>
-                    <code>
-                      {stateToMarkdown(this.state.htmlEditorState.getCurrentContent())}
-                    </code>
-                  </pre>
+                  <MarkdownEditor
+                    editorState={this.state.markdownEditorState}
+                    onEditorStateChange={this.onMarkdownEditorStateChange.bind(this)}
+                  />
               }
             </div>
           </div>

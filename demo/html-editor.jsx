@@ -115,7 +115,7 @@ export default class HtmlEditor extends React.Component {
         <Editor
           decorators={decorators}
           editorState={this.props.editorState}
-          onChange={this.props.onHtmlEditorStateChange}
+          onChange={this.props.onEditorStateChange}
           plugins={plugins}
         />
       </div>
