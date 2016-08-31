@@ -77,7 +77,8 @@ export default function createMarklessPlugin () {
         setEditorState(changeCurrentBlockType(editorState, "code-block", { languageName: matchData[1] }));
         return true;
       }
-      if (RichUtils.getCurrentBlockType(editorState) === "code-block") {
+      const currentBlockType = RichUtils.getCurrentBlockType(editorState);
+      if (["blockquote", "code-block"].indexOf(currentBlockType) !== -1) {
         if (event.ctrlKey) {
           const emptyBlockKey = genKey();
           const emptyBlock = new ContentBlock({
