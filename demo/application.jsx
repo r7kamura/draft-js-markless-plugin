@@ -1,3 +1,6 @@
+import { EditorState } from "draft-js";
+import { stateFromMarkdown } from "draft-js-import-markdown";
+import { stateToMarkdown } from "draft-js-export-markdown";
 import HtmlEditor from "./html-editor.jsx";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -6,8 +9,15 @@ class Root extends React.Component {
   constructor(...args) {
     super(...args);
     this.state = {
+      htmlEditorState: EditorState.createWithContent(
+        stateFromMarkdown(this.props.initialValue)
+      ),
       htmlActive: true,
     };
+  }
+
+  onHtmlEditorStateChange(editorState) {
+    this.setState({ htmlEditorState: editorState });
   }
 
   onHtmlTabClicked() {
@@ -45,13 +55,15 @@ class Root extends React.Component {
               {
                 this.state.htmlActive &&
                   <HtmlEditor
-                    initialValue={this.props.initialValue}
+                    editorState={this.state.htmlEditorState}
+                    onHtmlEditorStateChange={this.onHtmlEditorStateChange.bind(this)}
                   />
               }
               {
                 !this.state.htmlActive &&
                   <pre>
                     <code>
+                      {stateToMarkdown(this.state.htmlEditorState.getCurrentContent())}
                     </code>
                   </pre>
               }

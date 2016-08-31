@@ -1,6 +1,4 @@
-import { EditorState, Entity } from "draft-js";
-import { stateFromMarkdown } from "draft-js-import-markdown";
-import { stateToMarkdown } from "draft-js-export-markdown";
+import { Entity } from "draft-js";
 import createAutoListPlugin from "draft-js-autolist-plugin";
 import createBlockBreakoutPlugin from "draft-js-block-breakout-plugin";
 import createLinkifyPlugin from "draft-js-linkify-plugin";
@@ -111,26 +109,13 @@ const decorators = [
 ];
 
 export default class HtmlEditor extends React.Component {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      editorState: EditorState.createWithContent(
-        stateFromMarkdown(this.props.initialValue)
-      ),
-    };
-  }
-
-  onEditorStateChange(editorState) {
-    this.setState({ editorState });
-  }
-
   render() {
     return(
       <div className="markdown-body">
         <Editor
           decorators={decorators}
-          editorState={this.state.editorState}
-          onChange={this.onEditorStateChange.bind(this)}
+          editorState={this.props.editorState}
+          onChange={this.props.onHtmlEditorStateChange}
           plugins={plugins}
         />
       </div>
