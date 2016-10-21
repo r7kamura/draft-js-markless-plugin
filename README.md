@@ -4,6 +4,8 @@
 
 A plugin for draft-js that allows you to create a markdown-like keybinding WYSIWYG editor.
 
+## Demo
+
 https://r7kamura.github.io/draft-js-markless-plugin/
 
 [![demo](/images/demo.gif)](https://r7kamura.github.io/draft-js-markless-plugin/)
